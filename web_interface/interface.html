@@ -1,0 +1,70 @@
+  <!DOCTYPE html>
+  <html>
+    <head>
+      <!--Import Google Icon Font-->
+      <link href="http://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+      <!--Import materialize.css-->
+      <link type="text/css" rel="stylesheet" href="css/materialize.min.css"  media="screen,projection"/>
+
+      <!--Let browser know website is optimized for mobile-->
+      <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    </head>
+
+    <body><div class="container">
+      <!--Import jQuery before materialize.js-->
+      <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.1.min.js"></script>
+      <script type="text/javascript" src="js/materialize.min.js"></script>
+
+      <!--Table for the data-->
+       <h1  class="center-align" >Counters</h1>
+       <table class="striped">
+        <thead>
+          <tr>
+              <th data-field="id">Device ID</th>
+              <th data-field="data">Number of measeurements</th>
+         </tr>
+        </thead>
+
+        <tbody id="data">
+        </tbody>
+      </table>
+
+    </div></body>
+  </html>
+
+<script>
+
+    //this function fill the page with the data
+    function fill_page(response) {
+        var data = JSON.parse(response);
+        var i;
+        var out;
+    
+        document.getElementById("data").innerHTML = "";
+
+        for(i = 0; i < data.length; i++) {
+            out = "<tr><td>" + data[i].id + "</td><td>" + data[i].val + "</td></tr>";
+            document.getElementById("data").innerHTML += out;
+        }
+
+    }
+
+    // get the data each 1 s
+    window.setInterval(function(){
+
+        $.ajax({
+            type: "GET",
+            url: 'http://127.0.0.1:8081/',
+            data:{},
+            async:true,
+            crossDomain:true,
+            success: function(data, status, xhr) {
+                fill_page(data);
+            }
+        });
+    
+    }, 1000);
+
+
+</script>
+        
